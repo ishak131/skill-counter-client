@@ -13,8 +13,10 @@ import Container from '@material-ui/core/Container';
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
-
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../Redux/actions/auth';
+import { showAlert } from '../../Redux/actions/viewAlert';
 
 const token = "blnJH85nzo7SjOoT"
 function Copyright() {
@@ -62,7 +64,7 @@ const api = axios.create({
 
 export default function SignIn() {
   const classes = useStyles();
-
+  const dispatch = useDispatch()
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -90,10 +92,15 @@ export default function SignIn() {
           onSubmit={
             async (values) => {
               const { email, password } = values;
-              console.log(JSON.stringify(values));
               await api.get(`/logIn/${email}/${password}`).then(
-                res => Cookies.set(token, res.data.token)
-              ).catch(err => console.log(err))
+                res => {
+                  Cookies.set(process.env.REACT_APP_TOKEN_NAME, res.data.token)
+                  dispatch(logIn())
+                  dispatch(showAlert('you are logged in successfully', 'success'))
+                }).catch(err => {
+                  const { error = 'Sorry somthing went wrong' } = err.response.data
+                  dispatch(showAlert(error))
+                })
             }}
 
         >

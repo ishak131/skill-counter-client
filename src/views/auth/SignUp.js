@@ -14,8 +14,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-const token = "blnJH85nzo7SjOoT"
-console.log(process.env);
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../Redux/actions/auth';
+import { showAlert } from '../../Redux/actions/viewAlert';
+
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -56,11 +59,12 @@ const api = axios.create({
         "Access-Control-Allow-Origin": "*",
         'Content-Type': 'application/json'
     }
-
 });
 
 export default function SignUp() {
     const classes = useStyles();
+    const dispatch = useDispatch()
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -90,7 +94,14 @@ export default function SignUp() {
                         await api.post('/createUser', JSON.stringify({
                             fullName, email, password
                         })
-                        ).then(res => Cookies.set(token, res.data.token)).catch(err => console.log(err))
+                        ).then(res => {
+                            Cookies.set(process.env.REACT_APP_TOKEN_NAME, res.data.token)
+                            dispatch(logIn())
+                            dispatch(showAlert('you are signed up successfully', 'success'))
+                        }).catch(err => {
+                            const { error = 'Sorry somthing went wrong' } = err.response.data
+                            dispatch(showAlert(error))
+                        })
                     }}
                 >
                     {({

@@ -4,10 +4,12 @@ import HandleAuthentication from './HandleAuthentication';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import rootReducers from './Redux/reducers/index'
-require('dotenv/config');
-console.log(process.env.TOKEN_NAME);
-console.log(process.env);
+import ViewAlert from './components/ViewAlert';
+
+
+
 // STORE
+
 const store = createStore(
   rootReducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -21,6 +23,7 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <BrowserRouter>
+          <ViewAlert />
           <HandleAuthentication />
         </BrowserRouter>
       </div>
