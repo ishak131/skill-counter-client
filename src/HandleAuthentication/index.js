@@ -7,8 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showAlert } from '../Redux/actions/viewAlert';
 import { logIn, logOut } from '../Redux/actions/auth';
 import axios from 'axios';
+import Form from "./Form/Form"
+import Lists from "./Lists/Lists"
 
 const token = Cookies.get(process.env.REACT_APP_TOKEN_NAME)
+
 const api = axios.create({
     baseURL: 'http://localhost:4000',
     timeout: 1000,
@@ -19,13 +22,13 @@ const api = axios.create({
     }
 });
 
+
 export default function HandleAuthentication() {
 
     const dispatch = useDispatch()
     const isLogged = useSelector(state => state.authReducer);
 
     useEffect(() => {
-
         if (token) {
             api.post('/auth',
                 JSON.stringify({
@@ -42,8 +45,8 @@ export default function HandleAuthentication() {
     }, [dispatch]);
 
     return isLogged ? (<>
-        <button onClick={() => { console.log('work'); dispatch(logOut()) }}>logOut</button>
-        you are in
+        <Form />
+        <Lists />
     </>) :
         (<>
             <Switch>
