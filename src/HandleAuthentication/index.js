@@ -3,7 +3,8 @@ import LogIn from '../views/auth/LogIn';
 import SignUp from '../views/auth/SignUp';
 import { useEffect } from 'react'
 import Cookies from "js-cookie";
-
+import Form from "./Form/Form"
+import Lists from "./Lists/Lists"
 
 export default function HandleAuthentication() {
 
@@ -11,9 +12,10 @@ export default function HandleAuthentication() {
         const token = Cookies.get()
     }, []);
 
-    const isLogged = false
+    const isLogged = true
     return isLogged ? (<>
-
+     <Form/>
+     <Lists/>
     </>) :
         (<>
             <Switch>

@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const store = createStore(reducer)
+
 ReactDOM.render(
-  <React.StrictMode>
+  <reportWebVitals>
     <App />
-  </React.StrictMode>,
+  </reportWebVitals>,
   document.getElementById('root')
 );
 
