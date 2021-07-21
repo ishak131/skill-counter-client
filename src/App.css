@@ -2,73 +2,57 @@ body {
   font-family: cursive !important;
   display: block;
   margin: 8px;
-  
 }
 
-h1{
+h1 {
   display: block;
   font-weight: bold;
-  
-}
-form {
-  justify-content: center;
-  margin-top: 70px;
-  background-color: antiquewhite;
-  display: flex;
-  gap: 50px;
-  padding: 50px;
-}
-.inp{
-  height: 30px;
-  padding: 5px 15px;
 }
 
-.submit {
-    font-size: 14px;
-    font-family: cursive !important;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    display: inline-block;
-    text-align: center;
-    box-sizing: border-box;
-    background-color:#f2f4f5;
-}
 ol {
   list-style-type: decimal;
 }
- 
-.butt-down{
+
+.butt-down {
   background-color: cornflowerblue !important;
-    margin-left: 15px !important;
+  margin-left: 15px !important;
 }
+
 .butt-del {
   background-color: crimson !important;
   margin-left: 15px !important;
 }
+
 li {
   padding: 5px 0px;
-    display: list-item;
-    text-align: -webkit-match-parent;
+  display: list-item;
+  text-align: -webkit-match-parent;
 }
 
 button {
   margin-left: 30px;
   background-color: gold;
   padding: 5px;
-    font-size: 14px;
-    font-family: cursive !important;
-    padding: 8px;
-    border-radius: 5px;
-    font: 400 13.3333px Arial;
-    box-sizing: border-box;
-    border: none;
+  font-size: 14px;
+  font-family: cursive !important;
+  padding: 8px;
+  border-radius: 5px;
+  font: 400 13.3333px Arial;
+  box-sizing: border-box;
+  border: none;
 }
-.alert{
- 
+
+.alert {
   position: absolute;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
- 
+}
+.alert-message {
+  font-size: 16px;
+}
+.alert-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
 }

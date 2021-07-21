@@ -13,7 +13,7 @@ import Lists from "./Lists/Lists"
 const token = Cookies.get(process.env.REACT_APP_TOKEN_NAME)
 
 const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: process.env.REACT_APP_MY_BACKEND_HOST,
     timeout: 1000,
     headers: {
         "Access-Control-Allow-Origin": "*",
@@ -21,7 +21,6 @@ const api = axios.create({
         'authorization': `123=${token}`
     }
 });
-
 
 export default function HandleAuthentication() {
 
@@ -35,16 +34,19 @@ export default function HandleAuthentication() {
                     token
                 })
             ).then(res => {
-                console.log(res);
                 dispatch(logIn())
             }).catch(err => {
-                dispatch(showAlert(` You didn't log in for more than 1 month please login again `, 'warning'))
+                console.log(err.response);
+                dispatch(showAlert(` You didn't log in for more than 1 month please login again`, 'warning'))
                 dispatch(logOut())
             })
         }
     }, [dispatch]);
 
+
+
     return isLogged ? (<>
+        <button onClick={() => dispatch(logOut())}>logOut</button>
         <Form />
         <Lists />
     </>) :
