@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react"
 import { useSelector } from "react-redux";
-
+import Buttons from './buttons'
 
 
 
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#f2f4f5"
     }
   }
+  
 
 }))
 
@@ -42,11 +43,13 @@ function Form() {
   console.log(ListId);
   return (
     <div className={root}>
-      <h1> Developed By Ishak Saad Awad </h1>
+      <h1> Hello,  </h1>
       <form className={addSkillForm}>
         <input type="text" className="inp" placeholder="Write the skill" />
         <button type="submit" className="submit">submit</button>
+        <Buttons />
       </form>
+      
     </div>
   );
 }
