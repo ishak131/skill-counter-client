@@ -1,8 +1,8 @@
 const ListReducer = (state = "", action) => {
     switch (action.type) {
         case 'SET_ID':
-            return action.payload.listId;
-        default: 
+            return action.payload;
+        default:
             return state;
     }
 };

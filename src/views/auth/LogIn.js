@@ -18,7 +18,6 @@ import { useDispatch } from 'react-redux';
 import { logIn } from '../../Redux/actions/auth';
 import { showAlert } from '../../Redux/actions/viewAlert';
 
-const token = "blnJH85nzo7SjOoT"
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -95,6 +94,7 @@ export default function SignIn() {
               await api.get(`/logIn/${email}/${password}`).then(
                 res => {
                   Cookies.set(process.env.REACT_APP_TOKEN_NAME, res.data.token)
+                  console.log(res);
                   dispatch(logIn())
                   dispatch(showAlert('you are logged in successfully', 'success'))
                 }).catch(err => {
