@@ -10,11 +10,10 @@ import { Provider } from 'react-redux';
 const store = createStore(rootReducers)
 
 ReactDOM.render(
-  <reportWebVitals>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </reportWebVitals>,
+  <Provider store={store}>
+    <App />
+  </Provider>
+  ,
   document.getElementById('root')
 );
 

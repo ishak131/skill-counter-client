@@ -1,13 +1,17 @@
-import { makeStyles } from "@material-ui/core";
-import React, { useState, useEffect } from "react"
+import { Button, makeStyles, TextField } from "@material-ui/core";
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { showAlert } from '../../Redux/actions/viewAlert'
+import AlertWithOptions from "../../components/AlertWithOptions";
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
+import { setArrayOfLists } from "../../Redux/actions/arrayOfLists";
+import { AddToPhotos } from "@material-ui/icons";
 
 const token = Cookies.get(process.env.REACT_APP_TOKEN_NAME)
 const api = axios.create({
-  baseURL: `${process.env.REACT_APP_MY_BACKEND_HOST}/skill`,
+  baseURL: `${process.env.REACT_APP_MY_BACKEND_HOST}`,
   headers: {
     "Access-Control-Allow-Origin": "*",
     'Content-Type': 'application/json',
@@ -19,92 +23,111 @@ const api = axios.create({
 
 const useStyles = makeStyles((theme) => ({
 
-  root: {
-
-  }
-  , addSkillForm: {
+  addSkillForm: {
     justifyContent: "center",
-    marginTop: "70px",
     backgroundColor: "antiquewhite",
     display: "flex",
     gap: "50px",
     padding: "50px",
-    "& input": {
-      height: "30px",
-      padding: "5px 15px"
-    },
-    "& button": {
-      fontSize: "14px",
-      fontFamily: "cursive !important",
-      border: "none",
-      padding: "8px",
-      borderRadius: "5px",
-      display: "inline-block",
-      textAlign: "center",
-      boxSizing: "border-box",
-      backgroundColor: "#f2f4f5"
-    }
   }
 
 }))
 
 function Form() {
+
   const { root, addSkillForm } = useStyles()
-  const [userName, setUserName] = useState()
-  const { listId, skills } = useSelector(state => state.ListReducer)
+  const [isShowen, setIsShowen] = useState(false);
+  const [isSimilarSkill, setIsSimilar] = useState('');
+  const [newSkillName, setNewSkillName] = useState()
+
+  const { listIndex, listId, skills } = useSelector(state => state.ListReducer)
+  const arrayOfLists = useSelector(state => state.arrayOfListsReducer)
   const dispatch = useDispatch()
 
-  const updateSkillScore = async (newScore, skillId) => {
-    try {
-      await api.put('/editSkillScore', JSON.stringify(
-        {
-          skillId,
-          listId,
-          skillScore: newScore
-        }))
-
-    } catch (err) {
-      return console.log(err);
-      /*
-      setSkillScore(oldScore)
-      dispatch(showAlert(err.response.data, 'error'))
-    */
-    }
-    dispatch(showAlert('skill updated successfully', 'success'))
-  }
-
-  const checkIfSkillIsFound = (newSkillName) => {
-    console.log(newSkillName);
-    skills.map(({ skillScore, skillName, skillId }) => {
-      if (newSkillName === skillName)
-        return updateSkillScore(skillScore + 1, skillId)
+  const addSkillToMyList = async () => {
+    await api.post('/skill/createNewSkill', { skillName: newSkillName, listId }).then((res) => {
+      dispatch(showAlert("skill is added ", 'success'))
+      return addSkillInReduxState(res)
+    }).catch(() => {
+      dispatch(showAlert("Sorry somthing went wrong", 'error'))
     })
-
+    setIsShowen(false)
   }
 
-  console.log(listId);
-  console.log(skills);
-  useEffect(() => {
-    const getUserData = async () => {
-      await api.get('/getUser')
-        .then(res => setUserName(res.data.fullName))
-        .catch(err => console.log(err))
+  const addSkillInReduxState = (res) => {
+    arrayOfLists[listIndex].skills.push(res.data.skill)
+    dispatch(setArrayOfLists([...arrayOfLists]))
+  }
+
+
+  const checkIfSkillIsFound = () => {
+    if (!newSkillName || newSkillName.lentgh < 1) {
+      return dispatch(showAlert("Write a Skill please", 'warning'))
     }
-    getUserData()
-  }, [userName, setUserName]);
+    if (!listId)
+      return dispatch(showAlert("You didn't choose the list or didn't add any lists", 'warning'))
+    const newSkillNameInUpperCaseAndNoSpace = newSkillName.replace(/ /g, "").toUpperCase()
+    if (skills.lentgh < 1)
+      return addSkillToMyList(newSkillName)
+    ///////////////////////////////////////////////////////
+    const isIisIdentical =
+      skills.find(({ skillName }) => {
+        const skillNameInUpperCaseWithoutSpace = skillName.replace(/ /g, "").toUpperCase()
+        return newSkillNameInUpperCaseAndNoSpace === skillNameInUpperCaseWithoutSpace
+      })
+    if (isIisIdentical) {
+      return dispatch(showAlert("this skill already exists", 'info'))
+    }
+    ///////////////////////////////////////////////////////
 
+    const isSimilar = skills.find(({ skillName }) => {
+      const skillNameInUpperCaseWithoutSpace = skillName.replace(/ /g, "").toUpperCase()
+      return newSkillNameInUpperCaseAndNoSpace.includes(skillNameInUpperCaseWithoutSpace)
+        || skillNameInUpperCaseWithoutSpace.includes(newSkillNameInUpperCaseAndNoSpace)
+    })
+    if (isSimilar) {
+      setIsSimilar(isSimilar.skillName)
+      return setIsShowen(true)
+    }
 
+    ///////////////////////////////////////////////////////
 
+    return addSkillToMyList(newSkillName)
+  }
+  /////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////
   return (
     <div className={root}>
-      {userName && <h1> Hi {userName} </h1>}
       <form onSubmit={(e) => {
         e.preventDefault()
-        checkIfSkillIsFound(e.target.elements['skillName'].value)
+        checkIfSkillIsFound()
       }} className={addSkillForm}>
-        <input type="text" name='skillName' className="inp" placeholder="Write the skill" />
-        <button type="submit" className="submit">submit</button>
+        <TextField variant="outlined"
+          fullWidth
+          onChange={(e) => setNewSkillName(e.target.value)}
+          type="text"
+          name='skillName'
+          label="Write the skill" />
+        <Button
+          variant="contained"
+          startIcon={<AddToPhotos />}
+          type="submit"
+          color="primary"
+        >
+          Add
+        </Button>
       </form>
+      <AlertWithOptions
+        isShowen={isShowen}
+        tooltipTitle="add skill"
+        icon={
+          <LibraryAddIcon color="primary" />
+        }
+        handleClose={() => setIsShowen(false)}
+        action={() => { addSkillToMyList() }}
+        message={<>This <strong> list </strong> has a similar<strong> skill</strong> called <strong> " {isSimilarSkill} " </strong> do you want to add it or no</>}
+      />
     </div>
   );
 }
