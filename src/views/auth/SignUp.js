@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const api = axios.create({
-    baseURL: 'http://localhost:4000/user',
+    baseURL: `${process.env.REACT_APP_MY_BACKEND_HOST}/user`,
     timeout: 1000,
     headers: {
         "Access-Control-Allow-Origin": "*",

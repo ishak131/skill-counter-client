@@ -57,8 +57,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000/user',
-  timeout: 1000,
+  baseURL: `${process.env.REACT_APP_MY_BACKEND_HOST}/user`,
+  timeout: 10000,
   headers: {
     "Access-Control-Allow-Origin": "*",
     'Content-Type': 'application/json'
@@ -99,6 +99,7 @@ export default function SignIn() {
                   window.location.reload()
                   dispatch(showAlert('you are logged in successfully', 'success'))
                 }).catch(err => {
+                  console.log({ err });
                   const { error = 'Sorry somthing went wrong' } = err.response.data
                   dispatch(showAlert(error))
                 })

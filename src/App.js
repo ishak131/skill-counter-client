@@ -19,6 +19,7 @@ const store = createStore(
 
 
 function App() {
+  console.log(process.env.REACT_APP_MY_BACKEND_HOST);
   return (
     <Provider store={store}>
       <div className="App">
