@@ -95,7 +95,7 @@ export default function SignIn() {
               const { email, password } = values;
               await api.get(`/logIn/${email}/${password}`).then(
                 res => {
-                  Cookies.set(process.env.REACT_APP_TOKEN_NAME, res.data.token)
+                  Cookies.set(process.env.REACT_APP_TOKEN_NAME, res.data.token, { expires: 30 })
                   window.location.reload()
                   dispatch(showAlert('you are logged in successfully', 'success'))
                 }).catch(err => {
