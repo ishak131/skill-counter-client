@@ -13,7 +13,6 @@ import { setOpendListId } from '../../Redux/actions/opendList';
 
 
 const token = Cookies.get(process.env.REACT_APP_TOKEN_NAME)
-
 const api = axios.create({
     baseURL: `${process.env.REACT_APP_MY_BACKEND_HOST}/list`,
     headers: {

@@ -22,11 +22,15 @@ const api = axios.create({
 const AddNewListForm = ({ classes, addListToArrayOfLists }) => {
 
     const [open, setOpen] = useState(false)
-    const [listName, setListName] = useState(false)
+    const [listName, setListName] = useState('')
 
     const dispatch = useDispatch()
 
     const addNewList = async () => {
+        if (listName.length < 1) {
+            dispatch(showAlert('List name should contain one letter at least'))
+            return
+        }
         await api.post('/createNewList', {
             listName
         }).then(
@@ -34,7 +38,7 @@ const AddNewListForm = ({ classes, addListToArrayOfLists }) => {
                 addListToArrayOfLists(res.data.savedList);
                 dispatch(showAlert('the List is add successfully', 'success'))
             }
-        ).catch(() => dispatch(showAlert('Sorry you can not add more than 3')))
+        ).catch(() => dispatch(showAlert('List name should be at least one letter')))
     }
 
     const handleOpen = () => {

@@ -15,7 +15,7 @@ const ModalWithForm = ({ handleClose, open = false, onSubmit, onChange, title, a
                 handleClose()
             }} >
                 <Typography variant="h4" align="center" > {title} </Typography>
-                <TextField onChange={onChange} name="listName" label={label} variant="outlined" />
+                <TextField  onChange={onChange} label={label} variant="outlined" />
                 <Button variant="contained" color="primary" type="submit" > {action} </Button>
             </form>
         </Modal>
