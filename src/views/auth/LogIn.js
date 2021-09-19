@@ -21,7 +21,7 @@ function Copyright() {
   return (
     <>
       {
-  /*    <Typography variant="body2" color="textSecondary" align="center">
+  /*<Typography variant="body2" color="textSecondary" align="center">
           {'Copyright © '}
           <Link color="inherit" to="https://material-ui.com/">
               Your Website
@@ -158,12 +158,12 @@ export default function SignIn() {
               </Button>
 
               <Grid container>
-                {  /*<Grid item xs>
+                {  /* <Grid item xs>
                   <Link to="/" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid> 
-                */}
+                */  }
                 <Grid item>
                   <Link to="/sign-up" variant="body2">
                     {"Don't have an account? Sign Up"}

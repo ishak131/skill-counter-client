@@ -42,8 +42,9 @@ const AvatarNameAndImage = ({ classes }) => {
         var imagefile = document.querySelector('#avatar');
         data.append("avatar", imagefile.files[0]);
         await api.post('/uploadAvatar', data).then(res => {
-            console.log(res);
+            setAvatarPath(res.data.avatarImage.filename)
         }).catch(err => console.log(err))
+        
     }
 
     const handleClose = () => {
@@ -58,15 +59,21 @@ const AvatarNameAndImage = ({ classes }) => {
             await API.get('/user/getUser')
                 .then(res => {
                     setUserName(res.data.fullName)
-                    setAvatarPath(res.data.imagePath)
                 })
                 .catch(() => dispatch(showAlert('Somthing went wrong can you reaload the page', 'error')))
         }
         getUserData()
+        const getUserAvatar = async () => {
+            await api.get('/getAvatar')
+                .then(res => {
+                    setAvatarPath(res.data.imagePath)
+                })
+                .catch(() => dispatch(showAlert('Somthing went wrong can you reaload the page', 'error')))
+        }
+        getUserAvatar()
     }, [userName, setUserName, dispatch]);
-    console.log(avatarPath);
+    console.log( process.env.REACT_APP_MY_BACKEND_HOST + process.env.REACT_APP_AVATAR_PATH + avatarPath);
     return (
-
         <span onClick={handleOpen} className={classes.avatar} >
             <Modal
                 className={'AddNewListForm'}
@@ -83,7 +90,9 @@ const AvatarNameAndImage = ({ classes }) => {
                     <Button variant="contained" color="primary" type="submit" > upload avatar </Button>
                 </form>
             </Modal>
-            <Avatar src={avatarPath} >{changeUserNameInImage()}</Avatar>
+            <Avatar src={
+                process.env.REACT_APP_MY_BACKEND_HOST + process.env.REACT_APP_AVATAR_PATH + avatarPath
+            } >{changeUserNameInImage()}</Avatar>
             <Typography variant="h5">
                 Hi {userName}
             </Typography>
