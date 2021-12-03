@@ -22,8 +22,6 @@ const api = axios.create({
   }
 });
 
-
-
 function TabPanel(props) {
 
   const { children, value, index, ...other } = props;
