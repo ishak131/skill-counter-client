@@ -20,7 +20,7 @@ const api = axios.create({
 
 
 const AvatarNameAndImage = ({ classes }) => {
-    const [userName, setUserName] = useState()
+    const [userName, setUserName] = useState([])
     const [avatarPath, setAvatarPath] = useState('')
     const [modalIsOpend, setModalIsOpend] = useState(false)
 
