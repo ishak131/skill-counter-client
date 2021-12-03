@@ -37,7 +37,7 @@ export default function HandleAuthentication() {
                 JSON.stringify({
                     token
                 })
-            ).then(res => {
+            ).then(() => {
                 setIsCheked(true)
                 dispatch(logIn())
             }).catch(() => {

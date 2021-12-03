@@ -38,21 +38,17 @@ function Form() {
   const { root, addSkillForm } = useStyles()
   const [isShowen, setIsShowen] = useState(false);
   const [isSimilarSkill, setIsSimilar] = useState('');
-  const [newSkillName, setNewSkillName] = useState()
-  const [disabled, setDisabled] = useState(false)
+  const [newSkillName, setNewSkillName] = useState('')
   const { listIndex, listId, skills } = useSelector(state => state.ListReducer)
   const arrayOfLists = useSelector(state => state.arrayOfListsReducer)
   const dispatch = useDispatch()
 
   const addSkillToMyList = async () => {
-    setDisabled(true)
     await api.post('/skill/createNewSkill', { skillName: newSkillName, listId }).then((res) => {
       dispatch(showAlert("skill is added ", 'success'))
-      addSkillInReduxState(res)
-      return setDisabled(false)
+      return addSkillInReduxState(res)
     }).catch(() => {
       dispatch(showAlert("Sorry somthing went wrong", 'error'))
-      return setDisabled(false)
     })
     setIsShowen(false)
   }
@@ -112,14 +108,13 @@ function Form() {
           type="text"
           name='skillName'
           label="Write the skill"
-          disabled={disabled}
+
         />
         <Button
           variant="contained"
           startIcon={<AddToPhotos />}
           type="submit"
           color="primary"
-          disabled={disabled}
         >
           Add
         </Button>

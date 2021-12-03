@@ -20,22 +20,11 @@ const api = axios.create({
 
 
 const AvatarNameAndImage = ({ classes }) => {
-    const [userName, setUserName] = useState([])
+    const [userName, setUserName] = useState('user')
     const [avatarPath, setAvatarPath] = useState('')
-    const [modalIsOpend, setModalIsOpend] = useState(false)
+    const [open, setModalIsOpend] = useState(false)
 
     const dispatch = useDispatch()
-    const changeUserNameInImage = () => {
-        if (!userName)
-            return
-        let userAvatar = ''
-        const userNameSplitedIntoArray = userName.split(" ")
-        for (let index = 0; index < userNameSplitedIntoArray.length; index++) {
-            if (userNameSplitedIntoArray[index][0])
-                userAvatar += userNameSplitedIntoArray[index][0]
-        }
-        return userAvatar
-    }
 
     const uploadAvatarImage = async () => {
         const data = new FormData()
@@ -44,7 +33,6 @@ const AvatarNameAndImage = ({ classes }) => {
         await api.post('/uploadAvatar', data).then(res => {
             setAvatarPath(res.data.avatarImage.filename)
         }).catch(err => console.log(err))
-        
     }
 
     const handleClose = () => {
@@ -72,13 +60,20 @@ const AvatarNameAndImage = ({ classes }) => {
         }
         getUserAvatar()
     }, [userName, setUserName, dispatch]);
-    console.log( process.env.REACT_APP_MY_BACKEND_HOST + process.env.REACT_APP_AVATAR_PATH + avatarPath);
     return (
-        <span onClick={handleOpen} className={classes.avatar} >
+        <>
+            <span onClick={handleOpen} className={classes.avatar} >
+                <Avatar src={
+                    process.env.REACT_APP_MY_BACKEND_HOST + process.env.REACT_APP_AVATAR_PATH + avatarPath
+                } >{userName[0]}</Avatar>
+                <Typography variant="h5">
+                    Hi {userName}
+                </Typography>
+            </span>
             <Modal
                 className={'AddNewListForm'}
-                open={modalIsOpend}
-                handleClose={handleClose}
+                open={open}
+                onClose={handleClose}
             >
                 <form onSubmit={(e) => {
                     e.preventDefault()
@@ -90,13 +85,7 @@ const AvatarNameAndImage = ({ classes }) => {
                     <Button variant="contained" color="primary" type="submit" > upload avatar </Button>
                 </form>
             </Modal>
-            <Avatar src={
-                process.env.REACT_APP_MY_BACKEND_HOST + process.env.REACT_APP_AVATAR_PATH + avatarPath
-            } >{changeUserNameInImage()}</Avatar>
-            <Typography variant="h5">
-                Hi {userName}
-            </Typography>
-        </span>
+        </>
     );
 }
 

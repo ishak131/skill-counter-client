@@ -5,7 +5,7 @@ import Skill from './Skill';
 
 const List = ({ listIndex, skills, listId, classes }) => {
 
-    const [skillsState, setSkillsState] = useState()
+    const [skillsState, setSkillsState] = useState([])
 
     const compare = (a, b) =>
         b.skillScore - a.skillScore

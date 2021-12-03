@@ -99,7 +99,6 @@ export default function SignIn() {
                   window.location.reload()
                   dispatch(showAlert('you are logged in successfully', 'success'))
                 }).catch(err => {
-                  console.log({ err });
                   const { error = 'Sorry somthing went wrong' } = err.response.data
                   dispatch(showAlert(error))
                 })
