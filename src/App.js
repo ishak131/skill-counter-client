@@ -6,8 +6,6 @@ import { createStore } from 'redux'
 import rootReducers from './Redux/reducers/index'
 import ViewAlert from './components/ViewAlert';
 
-
-
 // STORE
 
 const store = createStore(

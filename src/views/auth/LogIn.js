@@ -16,6 +16,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { showAlert } from '../../Redux/actions/viewAlert';
+import CircularIndeterminate from '../../components/CircularIndeterminate'
 
 function Copyright() {
   return (
@@ -115,6 +116,7 @@ export default function SignIn() {
             values
           }) =>
             <form className={classes.form} onSubmit={handleSubmit}>
+              {isSubmitting && <CircularIndeterminate />}
               <Grid item xs={12}>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
@@ -128,6 +130,7 @@ export default function SignIn() {
                   type="email"
                   value={values.email}
                   variant="outlined"
+                  disabled={isSubmitting}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -143,6 +146,7 @@ export default function SignIn() {
                   type="password"
                   value={values.password}
                   variant="outlined"
+                  disabled={isSubmitting}
                 />
               </Grid>
               <Button

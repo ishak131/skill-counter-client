@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,24 +15,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { showAlert } from '../../Redux/actions/viewAlert';
-
-
-function Copyright() {
-    return (
-        <>
-            {
-    /*    <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" to="https://material-ui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-        */}
-        </>
-    );
-}
+import CircularIndeterminate from '../../components/CircularIndeterminate'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -117,6 +99,7 @@ export default function SignUp() {
                         values
                     }) =>
                         <form className={classes.form} onSubmit={handleSubmit}>
+                           {isSubmitting && <CircularIndeterminate />}
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField
@@ -199,9 +182,6 @@ export default function SignUp() {
                         </form>
                     }</Formik>
             </div>
-            <Box mt={5}>
-                <Copyright />
-            </Box>
         </Container>
     );
 }
